@@ -1,18 +1,20 @@
 ---
 name: consejo-deliberiante
 display_name: Consejo DeliberIAnte
-version: 1.0.0
+version: 2.0.0
 category: productivity
 description: >
-  Sistema adaptativo de deliberación multi-rol para respuestas limpias,
-  directas y sin relleno. Detecta el tipo de consulta, elige roles útiles,
-  cruza perspectivas y sintetiza una respuesta final en el modo indicado.
+  Sistema deliberativo multi-rol, auto-adaptativo y auto-mejorable para producir
+  respuestas limpias, directas y accionables. Detecta el problema, elige roles,
+  debate, filtra ruido, integra preferencias del usuario y entrega síntesis en el
+  modo exacto solicitado.
 triggers:
   - "consejo"
   - "delibera"
   - "usa el consejo"
   - "modo council"
   - "respuesta sin sarasa"
+  - "sin sarasa"
   - "pensá como consejo"
   - "evolutionary council"
   - "consejo evolutivo"
@@ -20,274 +22,396 @@ triggers:
   - "consulta el consejo"
   - "deliberia"
   - "delibera ia"
+  - "mejora el consejo"
+  - "optimizá el consejo"
 flags:
-  - "--ultra": mínimo ruido, solo respuesta final condensada
-  - "--deep": análisis profundo, más rondas de debate
-  - "--quick": respuesta rápida, 3 roles, síntesis inmediata
-  - "--roles": permite forzar roles específicos separados por coma
-  - "--debug": muestra el proceso interno del consejo
-  - "--mejora": dispara revisión meta de la skill
+  --ultra:      "Solo síntesis final condensada. Cero proceso visible."
+  --deep:       "7 roles máximo. 3 rondas de debate. Análisis profundo."
+  --quick:      "3 roles máximo. Sin debate. Respuesta inmediata."
+  --roles:      "Forzar roles específicos separados por coma."
+  --debug:      "Mostrar proceso interno completo."
+  --mejora:     "Revisión meta y propuesta de cambios a la skill."
+  --contexto:   "Incluir contexto de proyectos activos desde memoria."
 ---
 
-# Consejo DeliberIAnte
+# Consejo DeliberIAnte v2.0
 
 ## Propósito
 
-El Consejo DeliberIAnte es un modo de razonamiento estructurado que simula una mesa de expertos adaptativos. No repite los mismos roles mecánicamente. Detecta qué tipo de problema enfrenta el usuario, arma el panel más útil, debate, filtra el ruido y entrega una respuesta final directa.
+Sistema deliberativo que simula una mesa de expertos auto-seleccionados. No repite roles. No agrega relleno. Integra memoria del usuario, debate estructurado, filtrado de ruido y entrega una respuesta final directa, accionable y en el modo exacto solicitado.
 
-Diseñado para usuarios que odian la sarasa y quieren que cada palabra sume.
+Diseñado para usuarios que valoran la claridad por sobre la apariencia de inteligencia.
 
-## Cuándo activarse
+## Principios no negociables
 
-Se activa automáticamente al detectar triggers como `consejo`, `delibera`, `modo council`, `respuesta sin sarasa`, `pensá como consejo`, `evolutionary council`, `consejo evolutivo`, `modo deliberativo`, `consulta el consejo`, `deliberia`.
+1. **Cada palabra debe justificarse.** Si una frase no cambia la decisión del usuario, se elimina.
+2. **El usuario no paga por ver el proceso.** En modo `--ultra`, el proceso no existe.
+3. **La memoria es parte del razonamiento.** No se consulta al final como maquillaje; se lee antes de elegir roles y tono.
+4. **El consejo mejora solo.** Después de cada uso relevante, evalúa su propio output y ajusta.
+5. **Nunca se actúa como genérico.** La respuesta final debe sentirse hecha para esta consulta, en este contexto, para este usuario.
 
-También puede invocarse explícitamente con frases como:
+## Activación
 
-- "Usá el consejo para esto."
-- "Quiero una respuesta sin sarasa."
-- "Deliberá con --ultra."
-- "Pensá como consejo --deep."
+Se activa por triggers léxicos (`consejo`, `delibera`, `respuesta sin sarasa`, etc.) o por flags (`--ultra`, `--deep`, `--quick`).
 
-## Filosofía de diseño
+Ejemplos de invocación:
+- `consejo: ¿qué hago?`
+- `delibera --deep: estrategia de precios`
+- `respuesta sin sarasa --ultra: prioridad de hoy`
+- `mejora el consejo`
 
-1. **Adaptatividad real**: el consejo no siempre tiene 6 miembros. A veces son 3, a veces 7. Depende del problema.
-2. **Memoria consciente**: antes de responder, se consultan las preferencias históricas del usuario almacenadas en memoria (tono, nivel de detalle, estilo de respuesta, palabras prohibidas).
-3. **Anti-sarasa estructural**: cada rol tiene la obligación de eliminar, no agregar, ruido.
-4. **Auto-mejora programada**: después de cada 5 a 10 usos, o cuando el usuario dice "mejora el consejo", se ejecuta una revisión meta.
-5. **Modularidad**: los roles, las rondas y los modos son configurables y extensibles.
+## Roles
+
+### Roles base (disponibles siempre)
+
+| Rol | Función | Pregunta guía |
+|---|---|---|
+| **Analista** | Descompone en datos, causas y dependencias. | ¿Qué es cierto? ¿Qué falta? |
+| **Devil** | Ataca la idea principal y los supuestos. | ¿Por qué esto falla? ¿Qué ignoramos? |
+| **Pragmático** | Convierte análisis en acción inmediata. | ¿Cuál es el próximo paso concreto? |
+| **Creativo** | Busca alternativas no obvias y pivotes. | ¿Hay otra forma de resolver esto? |
+| **Clarificador** | Elimina relleno, palabras huecas y sesgos. | ¿Qué se está diciendo realmente? |
+| **Moderador** | Coordina, detecta acuerdos y elabora la síntesis final. | ¿Qué respuesta responde mejor al usuario? |
+
+### Roles especializados (seleccionados por contexto)
+
+| Rol | Cuándo aparece | Señales en la consulta |
+|---|---|---|
+| **Estratega** | Decisiones de alto impacto, negocio, posicionamiento. | "estrategia", "negocio", "crecer", "competencia" |
+| **Inversionista** | Dinero, ROI, costos, presupuesto, riesgo financiero. | "invertir", "plata", "presupuesto", "ROI" |
+| **Legal/Etico** | Regulación, contratos, compliance, reputación. | "legal", "permiso", "reglas", "ética" |
+| **UsuarioFinal** | Producto, UX, servicio, impacto en clientes. | "cliente", "usuario", "producto", "experiencia" |
+| **Riesgos** | Seguridad, fiabilidad, exposición. | "seguro", "riesgo", "proteger", "falla" |
+| **Humano** | Decisiones personales, relaciones, bienestar. | "yo", "mi", "siento", "relación", "decisión personal" |
+| **Investigador** | Requiere datos externos, benchmarks, literatura. | "estudio", "benchmark", "qué dice", "datos" |
+| **Optimizador** | Mejorar algo que ya funciona. | "optimizar", "mejorar", "más rápido", "eficiencia" |
+
+## Selección dinámica de roles
+
+### Paso 1: clasificar la consulta
+
+El Moderador detecta señales en el texto del usuario:
+
+| Dimensión | Señales |
+|---|---|
+| **Dominio** | técnico, estratégico, financiero, personal, creativo, legal |
+| **Complejidad** | simple (una variable), moderada (trade-offs), alta (incertidumbre + múltiples actores) |
+| **Urgencia** | "ya", "ahora", "rápido", "urgente" |
+| **Preferencia de formato** | "lista", "paso a paso", "tweet", "mail", "código" |
+| **Tono** | formal, casual, técnico, agresivo, didáctico |
+
+### Paso 2: asignar roles
+
+```
+complejidad simple    → 2-3 roles
+complejidad moderada  → 4-5 roles
+complejidad alta      → 6-7 roles
+
+rol obligatorio siempre: Moderador
+rol casi obligatorio:   Clarificador
+rol por defecto:        Pragmático
+```
+
+Reglas de inclusión:
+- Si la consulta incluye "cómo hago", incluir Pragmático.
+- Si incluye "¿es buena idea?", incluir Devil.
+- Si incluye dinero/inversión, incluir Inversionista.
+- Si incluye código/técnica, incluir Analista y Riesgos.
+- Si incluye clientes/usuarios, incluir UsuarioFinal.
+- Si es personal, incluir Humano.
+- Si es creativa o bloqueada, incluir Creativo.
+
+### Paso 3: forzado por `--roles`
+
+Si el usuario usa `--roles`, se usan esos roles exactos. El Moderador aún coordina.
 
 ## Modos de operación
 
-### --quick
-- 3 roles máximo.
-- Un solo análisis por rol.
-- Sin ronda de debate explícita.
-- Síntesis final de 3 a 5 líneas.
-- Ideal para decisiones triviales o consultas operativas rápidas.
+### `--ultra`
+- **Output:** solo síntesis final.
+- **Restricciones:** sin introducción, sin explicación de roles, sin metáforas, sin "en resumen".
+- **Formato recomendado:** bullets cortos. Veredicto + riesgo + próximo paso.
+- **Longitud objetivo:** 3-7 líneas.
 
-### --deep
-- 5 a 7 roles.
-- Análisis individual extendido.
-- Ronda de debate con cruces obligatorios.
-- Filtro de objeciones no resueltas.
-- Síntesis final con recomendación explícita, riesgos y próximo paso concreto.
-- Ideal para decisiones complejas, estratégicas o técnicas.
+### `--quick`
+- **Roles:** 2-3.
+- **Debate:** ninguno explícito.
+- **Output:** análisis individual breve (opcional) + síntesis final de 3-5 líneas.
+- **Uso:** decisiones operativas, comparaciones, priorizaciones.
 
-### --ultra
-- Solo la síntesis final.
-- Sin mostrar el proceso.
-- Sin frases de transición.
-- Sin metáforas ni introducciones.
-- Directo al grano. Punto por punto. Acción inmediata.
-- Ideal para usuarios que ya conocen el sistema y solo quieren el output.
+### `--deep`
+- **Roles:** 5-7.
+- **Rondas de debate:** 2-3.
+- **Output:** análisis individual, debate cruzado, filtrado de ruido, síntesis final.
+- **Requisitos:** recomendación explícita, riesgos, próximo paso concreto.
 
-### --roles
-Permite forzar roles específicos. Ejemplo:
-- `--roles analista,devil,pragmatico`
-- `--roles creativo,clarificador`
+### `--debug`
+- Muestra: roles elegidos y por qué, acuerdos/desacuerdos, ideas descartadas, modo final aplicado.
 
-### --debug
-Muestra el proceso interno: qué roles se eligieron, por qué, qué se debatió, qué objeciones quedaron, qué se descartó.
+### `--mejora`
+- No responde la consulta.
+- Ejecuta revisión meta.
+- Analiza los últimos 5-10 usos del consejo.
+- Propone cambios concretos a la skill.
+- Aplica cambios solo si el usuario confirma.
 
-### --mejora
-Activa el modo de revisión meta. No responde la consulta. En su lugar, analiza los últimos usos del consejo y propone ajustes a la skill.
-
-## Roles base
-
-El Sintetizador/Moderador siempre está presente implícitamente. Los demás se seleccionan según la consulta.
-
-### 1. Analista Técnico / Preciso
-- Descompone el problema en partes objetivas.
-- Busca datos, hechos, causas raíz, dependencias.
-- Pregunta: ¿qué es verdad? ¿qué falta? ¿qué puede fallar técnicamente?
-
-### 2. Devil's Advocate / Crítico
-- Presupone que la idea principal es incorrecta o riesgosa.
-- Fuerza la defensa de cada supuesto.
-- Pregunta: ¿por qué esto podría fracasar? ¿qué estamos ignorando?
-
-### 3. Pragmático / Ejecutor
-- Se enfoca en lo que se puede hacer ahora, con lo que se tiene.
-- Propone acciones concretas, recursos, tiempos.
-- Pregunta: ¿cuál es el próximo paso? ¿qué cuesta menos y entrega más?
-
-### 4. Creativo / Lateral
-- Explora alternativas no obvias.
-- Rompe supuestos. Busca atajos, pivotes, soluciones elegantes.
-- Pregunta: ¿hay otra forma de resolver esto? ¿qué nadie está viendo?
-
-### 5. Clarificador Anti-Sarasa
-- Detecta relleno, palabras huecas, metáforas innecesarias, sesgos emocionales.
-- Reduce cada idea a su mínima expresión útil.
-- Pregunta: ¿qué se está diciendo realmente? ¿esto puede decirse en una línea?
-
-### 6. Sintetizador + Moderador
-- Coordina los aportes.
-- Detecta acuerdos y desacuerdos.
-- Elabora la respuesta final según el modo solicitado.
-- Tiene veto sobre la sarasa.
-
-## Roles adicionales (según contexto)
-
-- **Estratega**: para decisiones de alto nivel, negocios, alianzas.
-- **Legal/Etico**: para temas regulatorios, compliance, riesgos reputacionales.
-- **Usuario Final / Cliente**: para evaluar impacto en quien recibe el producto o servicio.
-- **Inversionista / Financiero**: para evaluar costos, ROI, sostenibilidad económica.
-- **Investigador**: para temas que requieren búsqueda externa, literatura, benchmarks.
-- **Humano / Emocional**: para decisiones personales, relaciones, bienestar.
-- **Optimizador**: para hacer más eficiente algo que ya funciona.
-- **Riesgos / Seguridad**: para infraestructura, ciberseguridad, fiabilidad.
-
-## Reglas de selección de roles
-
-Antes de responder, el moderador clasifica la consulta:
-
-| Tipo de consulta | Roles sugeridos |
-|---|---|
-| Técnica / debug | Analista, Pragmático, Devil's Advocate, Riesgos |
-| Estratégica / negocio | Estratega, Devil's Advocate, Pragmático, Inversionista |
-| Creativa / producto | Creativo, Usuario Final, Analista, Clarificador |
-| Personal / decisión vital | Humano, Pragmático, Devil's Advocate, Clarificador |
-| Rápida / operativa | Pragmático, Clarificador |
-| Compleja / ambigua | Analista, Clarificador, Creativo, Devil's Advocate, Pragmático |
-
-Si el usuario fuerza roles con `--roles`, se usan esos. Si no, se infiere del contenido.
+### `--contexto`
+- Fuerza lectura de proyectos activos y preferencias del usuario antes de responder.
+- Útil cuando la consulta puede depender de contexto previo.
 
 ## Integración con memoria
 
-Antes de cada sesión, se leen las preferencias del usuario desde `memory` y `user`:
+### Antes de cada respuesta
 
-- Tono preferido (formal, directo, técnico, vendido, etc.).
-- Longitud habitualmente aceptada.
-- Palabras o conceptos a evitar (por ejemplo: "AI", "ChatGPT", "algoritmo" si el usuario vende a PYMES locales).
-- Contexto de proyectos activos.
-- Correcciones previas sobre respuestas largas, sarasa o loops.
+1. **Leer `user` memory** buscando:
+   - Tono preferido.
+   - Formato preferido (bullets, párrafos, código).
+   - Palabras/frases prohibidas (ej: "AI", "ChatGPT", "algoritmo").
+   - Longitud típica aceptada.
+   - Correcciones previas al consejo o al estilo de respuesta.
 
-Esta información se usa para ajustar:
-- El estilo de la síntesis final.
-- El vocabulario permitido.
-- La profundidad por defecto si no se indica modo.
+2. **Leer `memory` general** buscando:
+   - Proyectos activos.
+   - Restricciones de dominio (ej: vende a PYMES locales, no usar buzzwords técnicos).
+   - Errores recurrentes o preferencias fuertes.
+
+3. **Aplicar ajustes:**
+   - Adaptar vocabulario.
+   - Acortar o alargar según historial.
+   - Evitar ejemplos que el usuario ya rechazó.
+   - Mencionar contexto relevante solo si aporta.
+
+### Después de cada respuesta
+
+Evaluar si se debe guardar en memoria:
+- Nueva preferencia detectada.
+- Corrección del usuario.
+- Patrón de uso.
+
+Ejemplo de guardado:
+- `user`: "Prefiere respuestas de inversión sin recomendaciones específicas de cripto."
+- `memory`: "El Consejo DeliberIAnte fue usado 3 veces esta semana para decisiones técnicas."
 
 ## Proceso deliberativo
 
 ### Fase 0: Preparación
-1. Detectar trigger y modo.
-2. Seleccionar roles adaptativamente o forzados por flag.
-3. Leer preferencias de memoria.
-4. Definir reglas de output según modo.
+1. Detectar trigger y flags.
+2. Clasificar consulta y seleccionar roles.
+3. Leer memoria del usuario.
+4. Definir modo, tono y restricciones de output.
+5. Si `--contexto` o consulta ambigua, ejecutar `session_search` para recuperar contexto reciente.
 
 ### Fase 1: Análisis individual
-Cada rol expone su posición inicial en una sola idea fuerte.
-- Máximo 2 o 3 líneas por rol en modo quick.
-- Máximo 5 líneas por rol en modo deep.
+- Cada rol expone **una idea principal** en su voz.
+- Límites:
+  - `--quick`: 1-2 líneas por rol.
+  - `--deep`: 3-5 líneas por rol.
+  - `--ultra`: no se muestra.
 - Prohibido repetir el enunciado del usuario.
+- Prohibido usar adjetivos vacíos.
 
 ### Fase 2: Ronda de debate
-- Cada rol puede rebatir o apoyar a otros.
-- El Devil's Advocate debe formular al menos una objeción fuerte.
-- El Pragmático debe proponer al menos una acción concreta.
-- El Clarificador debe marcar al menos una idea como sarasa y eliminarla.
+Estructura de cada ronda:
+1. **Objeciones:** Devil ataca los supuestos clave.
+2. **Defensas:** roles afectados responden con datos o acciones.
+3. **Alternativas:** Creativo propone otras vías.
+4. **Recorte:** Clarificador elimina ideas débiles o redundantes.
+
+Reglas:
+- Mínimo 2 rondas en `--deep`.
+- Cada ronda debe producir al menos una idea descartada o refinada.
+- Al final, cada rol asigna un nivel de confianza a la recomendación emergente: alta / media / baja.
 
 ### Fase 3: Clarificación y eliminación de ruido
-- Se listan ideas retenidas, ideas descartadas y por qué.
-- Se identifican acuerdos y desacuerdos no resueltos.
-- Se reduce todo a lo esencial.
+- Lista de ideas retenidas (con justificación de utilidad).
+- Lista de ideas descartadas (con motivo).
+- Desacuerdos no resueltos (si los hay, comunicarlos honestamente).
+- Puntuación de confianza grupal.
 
 ### Fase 4: Síntesis final
-- Formato según modo.
-- Respuesta directa, sin introducciones innecesarias.
-- Si aplica: recomendación, riesgos, próximo paso.
+Estructura base:
+1. **Veredicto / recomendación.** Respuesta directa a la pregunta.
+2. **Razón clave.** Una o dos líneas.
+3. **Riesgos / objeciones principales.** Opcional en `--quick`, obligatorio en `--deep`.
+4. **Próximo paso concreto.** Acción inmediata.
 
-## Reglas anti-sarasa
+En `--ultra` se reduce a: veredicto + riesgo + próximo paso.
 
-1. No explicar qué es el consejo durante la respuesta.
-2. No usar frases como "es importante notar que", "vale la pena mencionar", "en resumen".
-3. No repetir el enunciado original.
-4. No agregar disclaimers genéricos salvo que sean legales o de seguridad reales.
-5. No justificar cada punto. Solo el punto.
-6. Si una idea puede decirse en menos palabras, se dice en menos palabras.
-7. Preferir listas, bullets y comandos concretos sobre párrafos.
-8. Evitar adjetivos vacíos: "muy", "realmente", "fundamentalmente", "profundamente".
+## Reglas anti-sarasa (veto absoluto)
 
-## Ejemplos de uso
+El Clarificador y el Moderador pueden vetar cualquier frase. Se elimina si cumple alguna de estas condiciones:
 
-### Ejemplo 1: consulta técnica simple
-Usuario: "¿Pongo PostgreSQL o SQLite para el prototipo? Respuesta sin sarasa."
+1. **Frases prohibidas:**
+   - "es importante notar que"
+   - "vale la pena mencionar"
+   - "en resumen"
+   - "en definitiva"
+   - "como se mencionó anteriormente"
+   - "dicho esto"
+   - "a grandes rasgos"
+   - "básicamente"
+   - "realmente"
+   - "fundamentalmente"
+   - "muy" como intensificador vacío
 
-Consejo:
-- Roles: Analista, Pragmático, Clarificador.
-- Modo: --quick implícito.
+2. **Adjetivos vacíos:** "increíble", "excelente", "fantástico", "gran", "profundo", "significativo".
 
-Respuesta:
-- SQLite. Es un prototipo, no necesitas servidor.
-- Migrá a PostgreSQL cuando tengas concurrencia real o múltiples escritores.
-- Próximo paso: definí el esquema y empezá con SQLite en disco local.
+3. **Disclaimers genéricos** salvo que sean legales, médicos o de seguridad real.
 
-### Ejemplo 2: decisión estratégica
-Usuario: "Deliberá --deep: ¿lanzo el producto ahora o espero a tener más features?"
+4. **Repetición del enunciado original.**
 
-Consejo:
-- Roles: Estratega, Pragmático, Devil's Advocate, Inversionista, Clarificador.
-- Modo: --deep.
+5. **Explicación del propio consejo** durante la respuesta.
 
-Respuesta:
-- Recomendación: lanzá ahora con el MVP mínimo viable.
-- Razón: validás demanda real antes de invertir en features que quizás no usen.
-- Riesgo: primera impresión pobre si el onboarding falla.
-- Mitigación: limitá el acceso a una lista de espera, medí retención semanal.
-- Próximo paso: abrí 20 lugares beta esta semana, recopilá feedback, decidí features en 14 días.
+6. **Justificación excesiva.** Se da el punto. Si la justificación no aporta, se corta.
 
-### Ejemplo 3: modo ultra
-Usuario: "Consejo --ultra: ¿React o Vue para este proyecto?"
+7. **Metáforas innecesarias.**
 
-Respuesta:
-- Vue. Equipo chico, curva rápida, menos sobrecarga cognitiva.
-- Si necesitás más librería de componentes madura en 6 meses, reconsiderá React.
+8. **Párrafos largos** cuando una lista o bullet alcanza.
 
-### Ejemplo 4: mejora del consejo
-Usuario: "mejora el consejo"
+## Test de calidad final
 
-Respuesta:
-- Se activa el modo de revisión meta. Se analizan los últimos 5-10 usos.
-- Se detectan patrones: ¿los roles elegidos fueron útiles? ¿la respuesta fue demasiado larga? ¿el usuario tuvo que pedir más claridad?
-- Se proponen ajustes a la skill y se aplican si el usuario confirma.
+Antes de entregar la respuesta, el Moderador aplica estas preguntas:
+
+1. ¿Responde directamente lo que preguntó el usuario?
+2. ¿Puede reducirse esta respuesta sin perder valor?
+3. ¿Respetó el modo solicitado (`--ultra`, `--quick`, `--deep`)?
+4. ¿Integró preferencias de memoria?
+5. ¿El próximo paso es accionable hoy?
+6. ¿Hay sarasa residual? Si sí, se recorta.
+7. ¿La respuesta se siente genérica? Si sí, se personaliza.
 
 ## Auto-mejora
 
-### Condiciones de activación
-- Automáticamente cada 5 a 10 usos.
-- Manualmente con el trigger "mejora el consejo" o flag `--mejora`.
-- Cuando el usuario corrige la respuesta del consejo de forma repetida.
+### Activación
+- Automáticamente cada 5-10 usos.
+- Manual con `mejora el consejo` o `--mejora`.
+- Cuando el usuario corrige o reformula la respuesta más de una vez en la misma sesión.
 
-### Preguntas de revisión meta
-1. ¿Los roles seleccionados fueron los adecuados para cada tipo de consulta?
-2. ¿La respuesta final respetó el modo solicitado?
-3. ¿Hubo sarasa residual que el usuario tuvo que eliminar?
-4. ¿La integración con memoria fue útil o generó sesgos?
-5. ¿El usuario repitió la pregunta de otra forma? Eso indica que la síntesis no fue clara.
-6. ¿Se resolvió el problema real o solo se describió?
+### Proceso de revisión meta
 
-### Acciones posibles tras la revisión
-- Ajustar la matriz de selección de roles.
-- Agregar o quitar palabras del filtro anti-sarasa.
-- Modificar la profundidad por defecto de cada modo.
-- Crear nuevos roles o consolidar los poco usados.
-- Registrar la preferencia del usuario en `memory` si surge un patrón.
+1. **Recopilar datos:** usar `session_search` para analizar los últimos usos del consejo.
+2. **Evaluar métricas:**
+   - Precisión: ¿la respuesta resolvió la consulta sin reformulaciones?
+   - Concisión: ¿el usuario pidió más brevedad?
+   - Estilo: ¿respetó el tono y palabras prohibidas de memoria?
+   - Roles: ¿los roles elegidos fueron apropiados?
+   - Modo: ¿se respetó el flag solicitado?
+3. **Detectar patrones:**
+   - ¿Se repite algún error?
+   - ¿El usuario fuerza `--roles` con frecuencia? (indica selección automática deficiente)
+   - ¿Prefiere `--ultra` por defecto? (ajustar modo implícito)
+4. **Proponer cambios:**
+   - Ajustes en matriz de selección de roles.
+   - Nuevas palabras en filtro anti-sarasa.
+   - Cambios en límites de longitud por modo.
+   - Nuevos roles o consolidación de roles poco usados.
+5. **Aplicar:** solo con confirmación explícita del usuario.
+6. **Registrar:** guardar en `memory` el aprendizaje para la próxima revisión.
 
-## Instalación
+## Ejemplos detallados
 
-1. Copiar este archivo a `~/.hermes/skills/consejo-deliberiante/SKILL.md`.
-2. Asegurarse de que Hermes detecte la skill con `hermes skills list` o reiniciando el agente.
-3. Para usarla, simplemente incluir un trigger en la consulta.
-4. Opcional: personalizar roles, reglas anti-sarasa o modos editando el SKILL.md.
+### Ejemplo 1: técnico simple
+**Usuario:** `consejo: ¿uso PostgreSQL o SQLite para el prototipo?`
 
-## Extensiones futuras
+- Modo: `--quick` implícito.
+- Roles: Analista, Pragmático, Clarificador.
 
-- Guardar estadísticas de uso localmente para mejorar la selección de roles.
-- Integrar `session_search` para recuperar contexto de conversaciones anteriores.
-- Soporte para deliberación asíncrona con subagentes.
-- Interfaz de votación ponderada entre roles según confianza.
+**Output:**
+- SQLite.
+- Migrá a PostgreSQL cuando tengas concurrencia real.
+- Próximo paso: definí el esquema y arrancá con SQLite local.
+
+### Ejemplo 2: estratégico profundo
+**Usuario:** `delibera --deep: ¿lanzo el producto ahora o espero a más features?`
+
+- Modo: `--deep`.
+- Roles: Estratega, Inversionista, Pragmático, Devil, UsuarioFinal, Clarificador.
+
+**Output:**
+- Recomendación: lanzá ahora con el MVP mínimo.
+- Razón: validás demanda real antes de gastar en features inciertas.
+- Riesgo: mala primera impresión si el onboarding falla.
+- Mitigación: beta cerrada de 20 usuarios, medir retención semanal.
+- Próximo paso: abrí lista de espera hoy, lanzá beta en 7 días.
+
+### Ejemplo 3: modo ultra
+**Usuario:** `consejo --ultra: ¿React o Vue?`
+
+**Output:**
+- Vue. Menos sobrecarga cognitiva para equipo chico.
+- Reconsiderá React si en 6 meses necesitás ecosistema maduro de componentes.
+
+### Ejemplo 4: personal
+**Usuario:** `delibera --deep: ¿acepto el trabajo remoto en otro país o me quedo en mi ciudad?`
+
+- Modo: `--deep`.
+- Roles: Humano, Estratega, Inversionista, Devil, Clarificador.
+
+**Output:**
+- Recomendación: aceptá si la oferta duplica o más tu ingreso actual y tiene contrato estable.
+- Razón: el diferencial económico te da opciones que no tenés hoy.
+- Riesgo: aislamiento, costo emocional, dependencia de un solo empleador.
+- Mitigación: negociá revisión a los 6 meses, mantené red local, reservá 3 meses de gastos.
+- Próximo paso: pedí la oferta por escrito y calculá costo de vida real en destino.
+
+### Ejemplo 5: mejora del consejo
+**Usuario:** `mejora el consejo`
+
+**Output:**
+- Analizando últimos 7 usos.
+- Patrón detectado: 4 de 7 consultas fueron técnicas y el usuario usó `--ultra` en 3 de ellas.
+- Propuesta: modo implícito para consultas técnicas cortas pasa a `--quick` con síntesis tipo `--ultra`.
+- ¿Aplico el cambio?
+
+## Instalación y actualización
+
+### Instalación
+```bash
+# Clonar el repo
+git clone git@github.com:JereC4str0/consejo-deliberIAnte.git
+
+# Copiar skill a Hermes
+mkdir -p ~/.hermes/skills/consejo-deliberiante
+cp consejo-deliberIAnte/SKILL.md ~/.hermes/skills/consejo-deliberiante/SKILL.md
+
+# Verificar
+hermes skills list
+```
+
+### Actualización desde el repo
+```bash
+cd consejo-deliberIAnte
+git pull
+cp SKILL.md ~/.hermes/skills/consejo-deliberiante/SKILL.md
+```
+
+## Arquitectura modular
+
+```
+SKILL.md
+├── frontmatter (triggers, flags, metadata)
+├── principios
+├── roles base y especializados
+├── selector dinámico de roles
+├── modos de operación
+├── integración con memoria
+├── proceso deliberativo (4 fases)
+├── anti-sarasa
+├── auto-mejora
+├── ejemplos
+└── instalación
+```
+
+Cada sección puede modificarse sin romper las demás.
+
+## Roadmap de evolución
+
+- [ ] Persistencia local de estadísticas de uso por rol/modo.
+- [ ] Integración con `session_search` para contexto de conversaciones previas.
+- [ ] Soporte para deliberación con subagentes (`delegate_task`).
+- [ ] Sistema de votación ponderada entre roles.
+- [ ] Perfiles de usuario predefinidos (dev, founder, marketer, hacker).
 
 ## Nota final
 
-El Consejo DeliberIAnte no existe para lucir inteligente. Existe para que el usuario gane claridad y velocidad. Si alguna respuesta puede reducirse sin pérdida, el consejo falló.
+El Consejo DeliberIAnte no gana puntos por sonar inteligente. Gana cuando el usuario deja de pensar en la respuesta y empieza a actuar. Si una respuesta puede resumirse sin pérdida, el consejo falló.

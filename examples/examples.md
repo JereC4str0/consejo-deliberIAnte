@@ -1,4 +1,4 @@
-# Ejemplos de uso
+# Ejemplos de uso v2.0
 
 ## Técnico rápido
 
@@ -9,10 +9,10 @@ consejo: ¿Pongo PostgreSQL o SQLite para el prototipo?
 
 **Roles:** Analista, Pragmático, Clarificador.
 
-**Respuesta esperada:**
-- SQLite. Es un prototipo, no necesitas servidor.
-- Migrá a PostgreSQL cuando tengas concurrencia real o múltiples escritores.
-- Próximo paso: definí el esquema y empezá con SQLite en disco local.
+**Output esperado:**
+- SQLite.
+- Migrá a PostgreSQL cuando tengas concurrencia real.
+- Próximo paso: definí el esquema y arrancá con SQLite local.
 
 ## Estratégico profundo
 
@@ -21,25 +21,25 @@ consejo: ¿Pongo PostgreSQL o SQLite para el prototipo?
 delibera --deep: ¿lanzo el producto ahora o espero a tener más features?
 ```
 
-**Roles:** Estratega, Pragmático, Devil's Advocate, Inversionista, Clarificador.
+**Roles:** Estratega, Inversionista, Pragmático, Devil, UsuarioFinal, Clarificador.
 
-**Respuesta esperada:**
-- Recomendación: lanzá ahora con el MVP mínimo viable.
-- Razón: validás demanda real antes de invertir en features que quizás no usen.
-- Riesgo: primera impresión pobre si el onboarding falla.
-- Mitigación: limitá el acceso a una lista de espera, medí retención semanal.
-- Próximo paso: abrí 20 lugares beta esta semana, recopilá feedback, decidí features en 14 días.
+**Output esperado:**
+- Recomendación: lanzá ahora con el MVP mínimo.
+- Razón: validás demanda real antes de gastar en features inciertas.
+- Riesgo: mala primera impresión si el onboarding falla.
+- Mitigación: beta cerrada de 20 usuarios, medir retención semanal.
+- Próximo paso: abrí lista de espera hoy, lanzá beta en 7 días.
 
 ## Ultra directo
 
 **Prompt:**
 ```
-consejo --ultra: ¿React o Vue para este proyecto?
+consejo --ultra: ¿React o Vue?
 ```
 
-**Respuesta esperada:**
-- Vue. Equipo chico, curva rápida, menos sobrecarga cognitiva.
-- Si necesitás más librería de componentes madura en 6 meses, reconsiderá React.
+**Output esperado:**
+- Vue. Menos sobrecarga cognitiva para equipo chico.
+- Reconsiderá React si en 6 meses necesitás ecosistema maduro de componentes.
 
 ## Con roles forzados
 
@@ -48,10 +48,26 @@ consejo --ultra: ¿React o Vue para este proyecto?
 delibera --roles analista,devil,pragmatico: ¿refactorizo este módulo legacy?
 ```
 
-**Respuesta esperada:**
+**Output esperado:**
 - Sí, si el costo de mantenimiento actual supera el costo de refactorizar.
-- No, si no tenés tests que aseguren que no rompés nada.
-- Próximo paso: escribí tests de regresión antes de tocar el módulo.
+- No, si no tenés tests de regresión.
+- Próximo paso: escribí tests antes de tocar el módulo.
+
+## Personal
+
+**Prompt:**
+```
+delibera --deep: ¿acepto el trabajo remoto en otro país o me quedo en mi ciudad?
+```
+
+**Roles:** Humano, Estratega, Inversionista, Devil, Clarificador.
+
+**Output esperado:**
+- Recomendación: aceptá si la oferta duplica o más tu ingreso actual y tiene contrato estable.
+- Razón: el diferencial económico te da opciones que no tenés hoy.
+- Riesgo: aislamiento, costo emocional, dependencia de un solo empleador.
+- Mitigación: negociá revisión a los 6 meses, mantené red local, reservá 3 meses de gastos.
+- Próximo paso: pedí la oferta por escrito y calculá costo de vida real en destino.
 
 ## Mejora del consejo
 
@@ -60,7 +76,20 @@ delibera --roles analista,devil,pragmatico: ¿refactorizo este módulo legacy?
 mejora el consejo
 ```
 
-**Respuesta esperada:**
-- Análisis de los últimos usos.
-- Patrones detectados.
-- Propuestas de ajuste a la skill.
+**Output esperado:**
+- Analizando últimos 7 usos.
+- Patrón detectado: 4 de 7 consultas fueron técnicas y el usuario usó `--ultra` en 3.
+- Propuesta: modo implícito para consultas técnicas cortas pasa a `--quick` con síntesis tipo `--ultra`.
+- ¿Aplico el cambio?
+
+## Con contexto
+
+**Prompt:**
+```
+consejo --contexto: ¿qué priorizo hoy?
+```
+
+**Output esperado:**
+- Basado en proyectos activos y memoria del usuario.
+- Lista priorizada de 3 acciones concretas.
+- Próximo paso inmediato.

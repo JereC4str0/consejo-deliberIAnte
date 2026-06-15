@@ -1,27 +1,30 @@
-# Guía de modificación
+# Guía de modificación v2.0
 
 ## Dónde editar
 
-El archivo principal es `SKILL.md`. Cualquier cambio ahí se refleja en Hermes después de reiniciar o recargar skills.
+El archivo principal es `SKILL.md`. Cualquier cambio ahí se refleja en Hermes después de recargar skills o reiniciar.
 
 ## Cómo agregar un nuevo rol
 
 1. Abrí `SKILL.md`.
-2. En la sección `Roles adicionales`, agregá una nueva subsección con:
-   - Nombre del rol.
-   - Qué hace.
-   - Pregunta guía.
-3. Actualizá la matriz de selección de roles si el rol aplica a un tipo de consulta frecuente.
+2. Agregá el rol en `Roles especializados` con:
+   - Nombre.
+   - Cuándo aparece.
+   - Señales que lo activan.
+3. Actualizá las reglas de inclusión en `Selección dinámica de roles`.
 4. Copiá el `SKILL.md` actualizado a `~/.hermes/skills/consejo-deliberiante/SKILL.md`.
 5. Verificá con `hermes skills list`.
 
 ## Cómo cambiar la profundidad de un modo
 
-Buscá la sección `Modos de operación` y ajustá los límites de roles, líneas por rol o si incluye debate.
+Buscá la sección `Modos de operación` y ajustá:
+- Cantidad de roles.
+- Cantidad de rondas de debate.
+- Longitud objetivo.
 
-## Cómo agregar una palabra al filtro anti-sarasa
+## Cómo agregar palabras al filtro anti-sarasa
 
-En la sección `Reglas anti-sarasa`, agregá una nueva regla o ejemplos de frases a evitar. Si la palabra es específica del usuario, considerá guardarla en memoria con `memory` en lugar de hardcodearla.
+En `Reglas anti-sarasa`, agregá frases o adjetivos a las listas correspondientes. Si es específico del usuario, preferí guardarlo en `memory`.
 
 ## Cómo ajustar triggers
 
@@ -45,7 +48,7 @@ Eso te muestra si los roles, modos y reglas se aplican como esperás.
 
 ## Buenas prácticas
 
-- No agregues roles por agregar. Cada rol debe tener una función clara.
+- No agregues roles por agregar. Cada rol debe tener una función clara y señales de activación.
 - Mantené el anti-sarasa. Si una regla genera más ruido, sacala.
+- Actualizá siempre `CHANGELOG.md` y `README.md` si el cambio es visible para el usuario.
 - Versioná los cambios importantes.
-- Documentá en `CHANGELOG.md`.
