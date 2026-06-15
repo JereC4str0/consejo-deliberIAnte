@@ -1,0 +1,12 @@
+# Hermes local
+.hermes/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+.vscode/
+.idea/
