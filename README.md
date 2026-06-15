@@ -1,64 +1,39 @@
+
+
+<div align="center">
+
 # Consejo DeliberIAnte
 
-Sistema adaptativo de deliberación multi-rol para respuestas limpias, directas y sin relleno.
+**Sistema adaptativo de deliberación multi-rol para Hermes Agent**
 
-Detecta el tipo de consulta, elige los roles más útiles, los hace debatir, elimina el ruido y entrega una respuesta final en el modo que le pidas.
+Respuestas limpias, directas, profundas y **sin sarasa**.
 
----
+[![image.png](https://i.postimg.cc/mDstVD9L/image.png)](https://postimg.cc/VSKfkz4p)
+</div>
 
 ## Qué es
 
-Una skill para Hermes Agent que simula una mesa de expertos. A diferencia de los councils clásicos, este no usa siempre los mismos roles. Elige el panel según el problema, aprende de la memoria del usuario y mejora a sí mismo.
+Una skill avanzada para **Hermes Agent** que simula una mesa de expertos reales.  
 
-## Características
+A diferencia de los councils tradicionales (que siempre usan los mismos roles fijos), este es **adaptativo**: elige los roles más útiles según el problema, aprovecha la memoria a largo plazo de Hermes para conocer tus preferencias y mejora a sí mismo con el tiempo.
 
-- Adaptativo: selecciona roles según el tipo de consulta.
-- Memoria: lee preferencias históricas del usuario desde Hermes memory.
-- Auto-mejora: revisión meta cada 5-10 usos o bajo demanda.
-- Modos: `--ultra`, `--deep`, `--quick`, `--roles`, `--debug`, `--mejora`.
-- Anti-sarasa: respuesta final directa, sin relleno.
+---
+
+## Características principales
+
+- **Adaptativo** — Selecciona y combina roles según el tipo de consulta (técnica, estratégica, creativa, personal, etc.)
+- **Memoria inteligente** — Lee preferencias históricas del usuario desde la memoria de Hermes
+- **Auto-mejora continua** — Revisa y mejora sus propios roles/procesos cada 5-10 usos o bajo demanda (`--mejora`)
+- **Múltiples modos** — `--ultra`, `--deep`, `--quick`, `--roles`, `--debug`, `--mejora`
+- **Anti-sarasa extremo** — Respuesta final limpia, directa y sin relleno innecesario
+- **Feedback loop** — Aprende de tus calificaciones (`+`, `-`, comentarios)
+
+---
 
 ## Instalación rápida
 
 ```bash
-git clone <repo> ~/m0ney/consejo-deliberiante
-cp SKILL.md ~/.hermes/skills/consejo-deliberiante/SKILL.md
-hermes skills list
-```
+git clone https://github.com/JereC4str0/consejo-deliberIAnte.git
 
-O usá el script:
-
-```bash
+cd consejo-deliberIAnte
 bash scripts/install.sh
-```
-
-## Uso
-
-```
-consejo: ¿uso PostgreSQL o SQLite para el prototipo?
-delibera --deep: ¿lanzo el producto ahora?
-respuesta sin sarasa: ¿React o Vue?
-pensá como consejo --ultra: prioridad de tareas de hoy
-```
-
-Ver `docs/usage.md` para más ejemplos y `docs/modification.md` para adaptar la skill.
-
-## Estructura del repo
-
-```
-.
-├── SKILL.md                 # Archivo principal de la skill
-├── README.md                # Este archivo
-├── CHANGELOG.md             # Historial de cambios
-├── docs/
-│   ├── usage.md             # Guía de uso
-│   └── modification.md      # Guía de modificación
-├── examples/
-│   └── examples.md          # Ejemplos de prompts y respuestas
-└── scripts/
-    └── install.sh           # Script de instalación
-```
-
-## Licencia
-
-MIT. Ver LICENSE.
